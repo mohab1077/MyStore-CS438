@@ -7,6 +7,7 @@ import { TraderMiddleware } from "../middleware/middleware";
 import { ShopOwnerMiddleware } from "../middleware/shopmiddlware";
 import { product } from "../classes/product";
 import { ProductRepository } from "../Repository/product";
+import { ProductServices } from "../services/productServices";
 
 
 
@@ -14,15 +15,20 @@ import { ProductRepository } from "../Repository/product";
 
 export class productRoute {
   public router: Router;
+  private Services : ProductServices
 
   constructor(
     private traderMiddleware: TraderMiddleware,
     private shopOwnerMiddleware: ShopOwnerMiddleware,
     private ProductRepo: ProductRepository,
+    
+   
    
   ) {
     this.router = express.Router();
+    this.Services = new ProductServices(this.ProductRepo);
     this.routes();
+    
   }
 
   private routes() {
@@ -50,7 +56,7 @@ export class productRoute {
         const prod = new product(id, name, price, description, imgs, attributes, stock, category, statuss)
 
         const { status, msg } =
-          await createProductServices(prod, this.ProductRepo,shop.category);
+          await this.Services.createProductServices(prod,shop.category);
         return res.status(status).json(msg);
       })
     );
@@ -79,7 +85,7 @@ export class productRoute {
         } = req.body;
 
         const prod = new product(id, name, price, description, imgs, attributes, stock, category, statuss, _id)
-        const { status, msg } =  await editProductServices(prod, this.ProductRepo , shop.category );
+        const { status, msg } =  await this.Services.editProductServices(prod , shop.category );
 
         return res.status(status).json(msg);
       })
@@ -96,7 +102,7 @@ export class productRoute {
       asyncHandler(async (req: any, res: Response) => {
 
         const { _id ,id } = req.body;
-        const { status, msg } = await deleteProductServices(_id, id, this.ProductRepo);
+        const { status, msg } = await this.Services.deleteProductServices(_id, id);
         return res.status(status).json(msg);
       })
     );
@@ -112,7 +118,7 @@ export class productRoute {
         const page = Number(req.query.page) || 1;
 
 
-        const { status, msg } = await getProductServices(req.query.id, page, this.ProductRepo);
+        const { status, msg } = await this.Services.getProductServices(req.query.id, page);
 
         return res.status(status).json(msg);
       })
