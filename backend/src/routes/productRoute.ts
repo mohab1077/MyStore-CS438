@@ -6,6 +6,7 @@ import { TraderMiddleware } from "../middleware/middleware";
 
 import { ShopOwnerMiddleware } from "../middleware/shopmiddlware";
 import { product } from "../classes/product";
+import { ProductRepository } from "../Repository/product";
 
 
 
