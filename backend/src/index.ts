@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import path from "path";
+import userRoute from "./routes/userRoute";
 
 dotenv.config();
 
@@ -17,10 +18,10 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-app.use("/shop", );
-app.use("/product", );
-app.use("/user", );
-app.use("/upload", );
+//app.use("/shop", ); //commendt this for avoid error 
+//app.use("/product", ); //commendt this for avoid error
+app.use("/user",userRoute );
+//app.use("/upload", ); //commendt this for avoid error
 
 // for pictures
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
