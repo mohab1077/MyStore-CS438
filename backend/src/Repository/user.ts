@@ -17,5 +17,21 @@ export class UserShopRepository{
     return await usermodel.findOne({ email });
   }
 
+   async createTrader(data: {
+    email: string;
+    password: string;
+    phone: string;
+    name: string;
+  }) {
+
+    return await usermodel.create({
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+      name: data.name,
+      type: "trader",
+    });
+  }
+
   
 }
