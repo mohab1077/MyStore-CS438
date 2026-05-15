@@ -5,3 +5,9 @@ export type LoginInput = {
   password: string;
 };
 
+export type RegisterInput = {
+  email: string;
+  password: string;
+  phone: string;
+  name: string;
+};

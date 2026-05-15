@@ -30,7 +30,7 @@ function Home() {
         </button>
       </div>
 
-      {mode === "signup" ? <SignupComponent  /> : <LoginComponent setMode={setMode} />}
+      {mode === "signup" ? <SignupComponent setMode={setMode}  /> : <LoginComponent setMode={setMode} />}
     </div>
   );
 }
