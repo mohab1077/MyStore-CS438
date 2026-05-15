@@ -2,6 +2,7 @@ import express, { Request, Response, Router } from "express";
 
 import asyncHandler from "../Errors/asyncHandler";
 import { Authentication, TraderAndAdminLogin } from "../classes/Authentication";
+import { SignUpMangment, TraderSignup } from "../classes/SignUpMangment";
 
 
 
@@ -43,7 +44,34 @@ export class AuthRoutes {
     );
 
 
+     // signup trader
+    this.router.post(
+      "/signup",
 
+      asyncHandler(async (req: Request, res: Response) => {
+
+        const {
+          email,
+          password,
+          phone,
+          name,
+        } = req.body;
+
+        const account = new SignUpMangment (
+          new TraderSignup()
+        );
+
+        const { status, msg } =
+          await account.Signup({
+            email,
+            password,
+            phone,
+            name,
+          });
+
+        return res.status(status).json(msg);
+      })
+    );
     
   }
 }
