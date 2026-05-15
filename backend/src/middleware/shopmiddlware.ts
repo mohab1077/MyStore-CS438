@@ -3,6 +3,7 @@ export interface AuthRequest extends Request {
   shop?: any;
 }
 import type { Request, Response, NextFunction } from "express";
+import { Ishop, shopModel } from "../modules/shop";
 
 
 export class ShopOwnerMiddleware {
