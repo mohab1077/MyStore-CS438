@@ -37,14 +37,14 @@ export class ShopOwnerMiddleware {
         });
       }
 
-      req.shop = new Shop(
+      /*req.shop = new Shop(
         shop.websiteId,
         shop.userId.toString(),
         shop.ShopName,
         shop.shopNumber,
         shop.category,
         shop._id.toString()
-      );
+      );*/
 
       next();
     } catch {
