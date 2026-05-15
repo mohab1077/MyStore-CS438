@@ -4,6 +4,7 @@ export interface AuthRequest extends Request {
 }
 import type { Request, Response, NextFunction } from "express";
 import { Ishop, shopModel } from "../modules/shop";
+import { Shop } from "../classes/shop";
 
 
 export class ShopOwnerMiddleware {
@@ -37,14 +38,14 @@ export class ShopOwnerMiddleware {
         });
       }
 
-      /*req.shop = new Shop(
+      req.shop = new Shop(
         shop.websiteId,
         shop.userId.toString(),
         shop.ShopName,
         shop.shopNumber,
         shop.category,
         shop._id.toString()
-      );*/
+      );
 
       next();
     } catch {
