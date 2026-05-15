@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import path from "path";
+import userRoute from "./routes/userRoute";
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.get("/", (req, res) => {
 
 app.use("/shop", );
 app.use("/product", );
-app.use("/user", );
+app.use("/user",userRoute );
 app.use("/upload", );
 
 // for pictures
