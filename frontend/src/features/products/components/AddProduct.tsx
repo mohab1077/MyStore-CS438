@@ -26,21 +26,21 @@ export default function ProductFormModal({
     attributeName: "",
     attributeValue: "",
   });
-  const { mutate} = useCreateProduct();
+  const { mutate } = useCreateProduct();
   const { storeID } = useAuth();
-    if(!storeID){
-        return
-    }
+  if (!storeID) {
+    return
+  }
 
-  const { data ,isLoading } = useGetCategory(storeID || "");
+  const { data, isLoading } = useGetCategory(storeID || "");
 
   const [categories, setCategories] = useState<string[]>([]);
 
-useEffect(() => {
-  if (data) {
-    setCategories(data);
-  }
-}, [data]);
+  useEffect(() => {
+    if (data) {
+      setCategories(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     setMounted(true);
@@ -86,7 +86,7 @@ useEffect(() => {
     setImageFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-   const handleSubmit = async () => {
+  const handleSubmit = async () => {
 
     const uploadedUrls = await uploadImagesToBackend(imageFiles);
     const payload = {
@@ -107,16 +107,22 @@ useEffect(() => {
     mutate(payload, {
       onSuccess: (data) => {
         toast.success(data);
-         setOpen(false);
+        setOpen(false);
       },
 
       onError: (error: any) => {
+        if (error?.response?.status === 500) {
+          toast.error("Something went wrong");
+          return;
+        }
         toast.error(
           error?.response?.data || "Something went wrong"
+
         );
+        console.log(error?.response?.data);
       },
     })
-    
+
 
     console.log(payload);
   };
@@ -134,7 +140,7 @@ useEffect(() => {
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Add Product</h2>
-          <button type="button" onClick={() => setOpen(false) } className="cursor-pointer">
+          <button type="button" onClick={() => setOpen(false)} className="cursor-pointer">
             ✕
           </button>
         </div>
