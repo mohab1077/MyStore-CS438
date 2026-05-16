@@ -6,6 +6,7 @@ import { TraderMiddleware } from "../middleware/middleware";
 import { ShopOwnerMiddleware } from "../middleware/shopmiddlware";
 import { ShopRepository } from "../Repository/shop";
 import { shopServices } from "../services/shopServices";
+import { Shop } from "../classes/shop";
 
 console.log("SHOP ROUTE FILE LOADED");
 
@@ -35,7 +36,38 @@ class shopRoutes {
   private routes() {
 
 
-    
+     this.router.post(
+      "/CreateShop",
+      this.traderMiddleware.handle,
+      asyncHandler(async (req: any, res: Response) => {
+        const traderId = req.user!._id;
+
+        const { websiteId, ShopName, shopNumber } = req.body;
+
+        const newShop = new Shop(
+          websiteId,
+          traderId,
+          ShopName,
+          shopNumber,
+          []
+        );
+
+        const { status, msg } = await this.Services.createShop(newShop);
+
+        return res.status(status).json(msg);
+      })
+    );
+
+    this.router.get(
+      "/myshops",
+      this.traderMiddleware.handle,
+      asyncHandler(async (req: AuthRequest, res: Response) => {
+        const traderId = req.user!._id;
+        const { status, msg } =
+        await this.Services.getMyShops(traderId);
+        return res.status(status).json(msg);
+      })
+    );
    
     // get categories
         this.router.get(
