@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 
 import path from "path";
 import userRoute from "./routes/userRoute";
+import shopRoutes from "./routes/shopRoutes";
+import productRoute from "./routes/productRoute";
 
 dotenv.config();
 
@@ -18,8 +20,8 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-//app.use("/shop", ); //commendt this for avoid error 
-//app.use("/product", ); //commendt this for avoid error
+app.use("/shop",shopRoutes ); //commendt this for avoid error 
+app.use("/product",productRoute ); //commendt this for avoid error
 app.use("/user",userRoute );
 //app.use("/upload", ); //commendt this for avoid error
 
