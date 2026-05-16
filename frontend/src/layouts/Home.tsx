@@ -2,11 +2,19 @@
 import { useState } from 'react';
 import { LoginComponent } from '../features/users/components/Login';
 import { SignupComponent } from '../features/users/components/SignUp';
+import { useAuth } from '../contexts/AuthProvider';
+import { Navigate } from 'react-router-dom';
 
 
 
 function Home() {
 
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/choose" replace />;
+  }
+  
  const [mode, setMode] = useState<"login" | "signup">("login");
 
   return (
