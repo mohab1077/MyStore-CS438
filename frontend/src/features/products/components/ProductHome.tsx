@@ -4,6 +4,8 @@ import { useAuth } from "../../../contexts/AuthProvider";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
 import { useEditProduct } from "../hooks/useEditProduct";
 import toast from "react-hot-toast";
+import { useGetCategory } from "../../shop/hooks/useGetCategory";
+import { CategoryFormModal } from "./AddCategory";
 
 type ProductStatus = "active" | "hidden";
 
