@@ -4,6 +4,7 @@ import { useCreateProduct } from "../hooks/useCreateProduct";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { uploadImagesToBackend } from "../../../api/upload";
 import toast from "react-hot-toast";
+import { useGetCategory } from "../../shop/hooks/useGetCategory";
 
 type ProductFormModalProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
