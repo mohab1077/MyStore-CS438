@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCreateShop } from "../hooks/useCreateShop";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -48,18 +49,21 @@ function EditCard(props: {
   const { form, setForm, onSave } = props;
   const { mutate, isPending } = useCreateShop();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleSave = async () => {
-      
-      mutate({
-    websiteId: form.ShopId,
-    ShopName: form.ShopName,
-    shopNumber: form.shopNumber,
-  }, {
-      onSuccess: (data) => {
+
+    mutate({
+      websiteId: form.ShopId,
+      ShopName: form.ShopName,
+      shopNumber: form.shopNumber,
+    }, {
+      onSuccess: async (data) => {
         toast.success(data);
-        navigate("/choose");
-       
+        await queryClient.invalidateQueries({ queryKey: ["my-shops"] });
+        await queryClient.refetchQueries({ queryKey: ["my-shops"] });
+        navigate("/choose", { replace: true });
+
       },
 
       onError: (error: any) => {
@@ -68,70 +72,69 @@ function EditCard(props: {
         );
       },
     });
-      onSave();
+    onSave();
   };
 
 
   return (
- <div className="min-h-screen  bg-[#f5f7fb]">
-  <div className="mx-auto flex min-h-screen max-w-3xl items-center justify-center">
-    <div className="w-full rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-      
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-zinc-900">
-          Create Store
-        </h2>
-        <p className="mt-2 text-sm text-zinc-500">
-          Fill in your store information to create a new shop.
-        </p>
-      </div>
+    <div className="min-h-screen  bg-[#f5f7fb]">
+      <div className="mx-auto flex min-h-screen max-w-3xl items-center justify-center">
+        <div className="w-full rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
 
-      <div className="space-y-5">
-        <InputField
-          label="Shop Name"
-          value={form.ShopName}
-          onChange={(value) =>
-            setForm((prev) => ({ ...prev, ShopName: value }))
-          }
-          placeholder="Enter shop name"
-        />
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-zinc-900">
+              Create Store
+            </h2>
+            <p className="mt-2 text-sm text-zinc-500">
+              Fill in your store information to create a new shop.
+            </p>
+          </div>
 
-        <InputField
-          label="Shop Number"
-          value={form.shopNumber}
-          onChange={(value) =>
-            setForm((prev) => ({ ...prev, shopNumber: value }))
-          }
-          placeholder="Enter shop number"
-        />
+          <div className="space-y-5">
+            <InputField
+              label="Shop Name"
+              value={form.ShopName}
+              onChange={(value) =>
+                setForm((prev) => ({ ...prev, ShopName: value }))
+              }
+              placeholder="Enter shop name"
+            />
 
-        <InputField
-          label="Shop Id"
-          value={form.ShopId}
-          onChange={(value) =>
-            setForm((prev) => ({ ...prev, ShopId: value }))
-          }
-          placeholder="Enter shop Id"
-        />
-      </div>
+            <InputField
+              label="Shop Number"
+              value={form.shopNumber}
+              onChange={(value) =>
+                setForm((prev) => ({ ...prev, shopNumber: value }))
+              }
+              placeholder="Enter shop number"
+            />
 
-      <div className="mt-8 flex justify-end">
-        <button
-          type="button"
-          disabled={isPending}
-          onClick={handleSave}
-          className={`rounded-xl px-5 py-3 text-sm font-semibold transition ${
-            isPending
-              ? "cursor-not-allowed bg-zinc-300 text-zinc-500"
-              : "bg-zinc-900 text-white hover:bg-zinc-800"
-          }`}
-        >
-          {isPending ? "Creating..." : "Create New Shop"}
-        </button>
+            <InputField
+              label="Shop Id"
+              value={form.ShopId}
+              onChange={(value) =>
+                setForm((prev) => ({ ...prev, ShopId: value }))
+              }
+              placeholder="Enter shop Id"
+            />
+          </div>
+
+          <div className="mt-8 flex justify-end">
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={handleSave}
+              className={`rounded-xl px-5 py-3 text-sm font-semibold transition ${isPending
+                  ? "cursor-not-allowed bg-zinc-300 text-zinc-500"
+                  : "bg-zinc-900 text-white hover:bg-zinc-800"
+                }`}
+            >
+              {isPending ? "Creating..." : "Create New Shop"}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
   );
 }
 
@@ -139,25 +142,25 @@ export default function CreateShop() {
   const [storeData, setStoreData] = useState<StoreForm>({
     ShopName: "",
     shopNumber: "",
-   ShopId:""
+    ShopId: ""
   });
 
   const [form, setForm] = useState<StoreForm>(storeData);
-  
+
 
   const handleSave = () => {
     setStoreData(form);
     console.log("UPDATE PAYLOAD:", form);
-    
+
 
   };
 
   return (
-        <EditCard
-          form={form}
-          setForm={setForm}
-          onSave={handleSave}
-        />
-     
+    <EditCard
+      form={form}
+      setForm={setForm}
+      onSave={handleSave}
+    />
+
   );
 }

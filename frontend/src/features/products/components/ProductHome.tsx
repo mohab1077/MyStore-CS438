@@ -142,7 +142,15 @@ function SearchAndFilters({
     category: string;
     onCategoryChange: (value: string) => void;
 }) {
-    const categories = ["All", "Shoes", "Clothing", "Electronics", "Accessories"];
+
+     const { storeID } = useAuth();
+    if (!storeID) {
+        return
+    }
+    const { data, isLoading } = useGetCategory(storeID || "");
+
+    const categories = ["All", ...(data || [])];
+
 
     return (
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">

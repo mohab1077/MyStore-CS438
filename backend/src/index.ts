@@ -7,6 +7,7 @@ import path from "path";
 import userRoute from "./routes/userRoute";
 import shopRoutes from "./routes/shopRoutes";
 import productRoute from "./routes/productRoute";
+import uploadRoutes from "./routes/uploadRoutes";
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ app.get("/", (req, res) => {
 app.use("/shop",shopRoutes ); //commendt this for avoid error 
 app.use("/product",productRoute ); //commendt this for avoid error
 app.use("/user",userRoute );
-//app.use("/upload", ); //commendt this for avoid error
+app.use("/upload",uploadRoutes ); //commendt this for avoid error
 
 // for pictures
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));

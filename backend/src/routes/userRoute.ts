@@ -3,6 +3,7 @@ import express, { Request, Response, Router } from "express";
 import asyncHandler from "../Errors/asyncHandler";
 import { Authentication, TraderAndAdminLogin } from "../classes/Authentication";
 import { SignUpMangment, TraderSignup } from "../classes/SignUpMangment";
+import { EmailValidator, NameValidator, PhoneValidator } from "../Errors/validations";
 
 
 
@@ -11,7 +12,7 @@ export class AuthRoutes {
   public router: Router;
 
   constructor() {
-    
+
     this.router = express.Router();
     this.routes();
   }
@@ -23,7 +24,7 @@ export class AuthRoutes {
       "/login",
 
       asyncHandler(async (req: Request, res: Response) => {
-      
+
         const { email, password } = req.body;
 
         const authenticationUser = new Authentication(
@@ -44,7 +45,7 @@ export class AuthRoutes {
     );
 
 
-     // signup trader
+    // signup trader
     this.router.post(
       "/signup",
 
@@ -57,7 +58,19 @@ export class AuthRoutes {
           name,
         } = req.body;
 
-        const account = new SignUpMangment (
+        const validators = [
+          EmailValidator.safeParse(email),
+          PhoneValidator.safeParse(phone),
+          NameValidator.safeParse(name),
+        ];
+
+        for (const check of validators) {
+          if (!check.success) {
+            return res.status(400).json(check.error.issues[0].message);
+          }
+        }
+
+        const account = new SignUpMangment(
           new TraderSignup()
         );
 
@@ -72,7 +85,7 @@ export class AuthRoutes {
         return res.status(status).json(msg);
       })
     );
-    
+
   }
 }
 
