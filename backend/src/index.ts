@@ -41,5 +41,5 @@ mongoose
   .catch((err) => console.log("Failed to connect!", err));
 
 app.listen(port, "0.0.0.0", () => {
-  console.log(`Server is running at: http://0.0.0.0:${port}`);
+  console.log(`Server is running at: http://localhost:${port}`);
 });
