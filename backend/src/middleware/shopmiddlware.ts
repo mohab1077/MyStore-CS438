@@ -13,7 +13,7 @@ export class ShopOwnerMiddleware {
       const rawId = req.body?.id ?? req.query?.id;
 
       const shopId = String(rawId);
-      console.log("hi")
+     
 
       if (!shopId) {
         return res.status(400).json({
