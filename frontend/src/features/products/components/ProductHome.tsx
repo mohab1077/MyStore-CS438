@@ -650,6 +650,10 @@ function ProductsTable({ products, setProducts }: { products: ProductRow[]; setP
       },
 
       onError: (error: any) => {
+        if (error?.response?.status === 500) {
+          toast.error("Something went wrong");
+          return;
+        }
         toast.error(
           error?.response?.data || "Something went wrong"
         );
