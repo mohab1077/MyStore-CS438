@@ -1,5 +1,6 @@
 import { product } from "../classes/product";
 import { ProductRepository } from "../Repository/product";
+import { ShopRepository } from "../Repository/shop";
 
 export class ProductServices {
   constructor(private ProductRepo: ProductRepository) {}
@@ -107,4 +108,27 @@ export class ProductServices {
       msg: find,
     };
   }
+
+  async getWebSiteProducts(
+    websiteId: string,
+    page: number,
+    shopRepo: ShopRepository
+
+  ) {
+    const find = await this.ProductRepo.GetCustomerProd(websiteId, page,shopRepo);
+
+    if (!find) {
+      return {
+        status: 400,
+        msg: "shop not found",
+      };
+    }
+
+    return {
+      status: 200,
+      msg: find,
+    };
+  }
+
+
 }

@@ -1,8 +1,9 @@
 import { product } from "../classes/product";
 import { productModel } from "../modules/product";
+import { ShopRepository } from "./shop";
 
 export class ProductRepository {
-    async CreateProd(Product: product , category : string []) {
+    async CreateProd(Product: product, category: string[]) {
 
 
         if (!category.includes(Product.category)) {
@@ -12,21 +13,21 @@ export class ProductRepository {
         return await productModel.create(Product.toPersistence());
     }
 
-    async EditProd(Product: product , category : string []) {
-  
+    async EditProd(Product: product, category: string[]) {
+
 
         if (!category.includes(Product.category)) {
             return false;
         }
 
         const findprod = await productModel.findById(Product.GetProductId()); // edit
-         
+
         if (!findprod) {
             return undefined;
         }
 
-        if(findprod.storeId.toString() != Product.GetStoreId()){
-          return undefined;
+        if (findprod.storeId.toString() != Product.GetStoreId()) {
+            return undefined;
         }
 
         findprod.name = Product.name;
@@ -46,19 +47,19 @@ export class ProductRepository {
 
     async DeleteProd(_id: string, id: string) {
 
-       
+
 
         const findprod = await productModel.findById(_id); // edit check for if prod for the user
-        
-   
+
+
         if (!findprod) {
             return false;
         }
 
-         if(findprod.storeId.toString() != id){
+        if (findprod.storeId.toString() != id) {
             console.log(findprod.storeId.toString())
             console.log(id)
-          return false;
+            return false;
         }
 
         await productModel.findByIdAndDelete(_id)
@@ -71,7 +72,7 @@ export class ProductRepository {
 
         const skip = (page - 1) * LIMIT;
 
-     
+
 
         const findprod = await productModel
             .find({ storeId: id })
@@ -90,5 +91,29 @@ export class ProductRepository {
             total,
         };
     }
+
+    async GetCustomerProd(websiteId: string, page: number, shopRepo: ShopRepository) {
+
+        const LIMIT = 25;
+
+        const skip = (page - 1) * LIMIT;
+        const find = await shopRepo.findShopIdByWebsiteId(websiteId);
+        if (!find) {
+            return false
+        }
+        const findprods = await productModel.find({ storeId: find._id, status: 'active' }).sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(LIMIT);;
+
+        const total = await productModel.countDocuments({ storeId: find._id, status: 'active' });
+
+        return {
+            data: findprods,
+            page,
+            totalPages: Math.ceil(total / LIMIT),
+            total,
+        };
+    }
+
 
 }

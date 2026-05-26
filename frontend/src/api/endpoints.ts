@@ -17,6 +17,7 @@ export const ENDPOINTS = {
     EDIT: "/product/edit",
     DELETE: "/product/prod",
     TRADER_PROD: "/product/prod",
+     GET_PROD: "/product/csm/prod"
   }
 
 };

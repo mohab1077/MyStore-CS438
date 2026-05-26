@@ -8,6 +8,7 @@ import { ShopOwnerMiddleware } from "../middleware/shopmiddlware";
 import { product } from "../classes/product";
 import { ProductRepository } from "../Repository/product";
 import { ProductServices } from "../services/productServices";
+import { ShopRepository } from "../Repository/shop";
 
 
 
@@ -123,7 +124,21 @@ export class productRoute {
         return res.status(status).json(msg);
       })
     );
+
+    this.router.get(
+      "/csm/prod",
+
+      asyncHandler(async (req: any, res: Response) => {
+        const page = Number(req.query.page) || 1;
+        const shopRepo = new ShopRepository();
+        const { status, msg } = await this.Services.getWebSiteProducts(req.query.websiteId, page,shopRepo);
+
+        return res.status(status).json(msg);
+      })
+    );
   }
+
+  
 }
 
 export default new productRoute(

@@ -46,6 +46,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useParams } from "react-router-dom";
+import { useGetProducts } from "../hooks/useGetProducts";
 
 /**
  * Visitor Store Products Page
@@ -142,23 +143,7 @@ const mockBackendResponse = {
   },
 };
 
-async function getStoreProductsFromApi({ websiteId, page }) {
-  // استبدل هذا الجزء باستدعاء API الحقيقي عندك:
-  // const res = await axios.get(`/product/prod`, {
-  //   params: { websiteId, page },
-  // });
-  // return res.data;
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  return {
-    ...mockBackendResponse,
-    msg: {
-      ...mockBackendResponse.msg,
-      page,
-    },
-  };
-}
 
 function ProductImage({
   src,
@@ -272,9 +257,8 @@ function ProductDetails({
               <button
                 key={img}
                 onClick={() => setActiveImage(img)}
-                className={`overflow-hidden rounded-2xl ring-2 transition ${
-                  activeImage === img ? "ring-indigo-600" : "ring-transparent"
-                }`}
+                className={`overflow-hidden rounded-2xl ring-2 transition ${activeImage === img ? "ring-indigo-600" : "ring-transparent"
+                  }`}
               >
                 <ProductImage src={img} alt={product.name} className="h-24 w-full" />
               </button>
@@ -295,9 +279,7 @@ function ProductDetails({
             <span className="rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700">
               Remaining quantity: {product.stock}
             </span>
-            <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700">
-              Status: {product.status}
-            </span>
+            
           </div>
 
           <p className="mt-6 text-lg leading-8 text-slate-600">{product.description}</p>
@@ -321,7 +303,7 @@ function ProductDetails({
           <div className="mt-8 flex items-center justify-between rounded-[2rem] bg-slate-950 p-5 text-white">
             <div>
               <p className="text-sm font-semibold text-slate-300">Price</p>
-              <p className="text-4xl font-black">${product.price}</p>
+              <p className="text-4xl font-black">LYD {product.price}</p>
             </div>
 
             <button className="rounded-2xl bg-white px-5 py-3 font-black text-slate-950 transition hover:bg-indigo-100">
@@ -335,61 +317,31 @@ function ProductDetails({
 }
 
 export default function StoreProductsPage() {
-  // في مشروعك الحقيقي جيب websiteId من React Router:
-   //const { websiteId } = useParams();
-  const websiteId = "libya-shop-1";
+  
+  const { websiteId } = useParams();
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [pageInfo, setPageInfo] = useState({
-    page: 1,
-    totalPages: 1,
-    total: 0,
-  });
+
+
   const [page, setPage] = useState(1);
-  const [loadingProducts, setLoadingProducts] = useState(true);
-  const [error, setError] = useState("");
+
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  useEffect(() => {
-    let ignore = false;
+  const {
+    data,
+    isLoading,
+    isError
+  } = useGetProducts(websiteId!, page);
+  
 
-    async function loadProducts() {
-      setLoadingProducts(true);
-      setError("");
+  const products = data?.data || [];
 
-      try {
-        const result = await getStoreProductsFromApi({ websiteId, page });
+  const pageInfo = {
+  page: data?.page || 1,
+  totalPages: data?.totalPages || 1,
+  total: data?.total || 0,
+};
 
-        if (ignore) return;
 
-        if (result.status !== 200) {
-          setProducts([]);
-          setError(typeof result.msg === "string" ? result.msg : "Something went wrong");
-          return;
-        }
-
-        setProducts(result.msg.data || []);
-        setPageInfo({
-          page: result.msg.page,
-          totalPages: result.msg.totalPages,
-          total: result.msg.total,
-        });
-      } catch (err) {
-        if (!ignore) {
-          setProducts([]);
-          setError("Something went wrong");
-        }
-      } finally {
-        if (!ignore) setLoadingProducts(false);
-      }
-    }
-
-    loadProducts();
-
-    return () => {
-      ignore = true;
-    };
-  }, [websiteId, page]);
 
   if (selectedProduct) {
     return (
@@ -407,16 +359,16 @@ export default function StoreProductsPage() {
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 text-slate-900 md:px-8">
       <div className="mx-auto max-w-7xl">
-       
 
-        {loadingProducts ? (
+
+        {isLoading ? (
           <div className="flex min-h-[360px] items-center justify-center rounded-[2rem] bg-white shadow-sm ring-1 ring-slate-200">
             <Loader2 className="animate-spin text-indigo-600" size={36} />
           </div>
-        ) : error ? (
+        ) : isError ? (
           <div className="rounded-[2rem] bg-white p-10 text-center shadow-sm ring-1 ring-slate-200">
             <Package className="mx-auto mb-4 text-slate-400" size={42} />
-            <h2 className="text-2xl font-black text-slate-950">{error}</h2>
+            <h2 className="text-2xl font-black text-slate-950">{"Something went wrong"}</h2>
           </div>
         ) : products.length > 0 ? (
           <motion.section
@@ -424,7 +376,7 @@ export default function StoreProductsPage() {
             animate={{ opacity: 1 }}
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {products.map((product) => (
+            {products.map((product:any) => (
               <ProductCard
                 key={product._id}
                 product={product}
@@ -440,7 +392,7 @@ export default function StoreProductsPage() {
           </div>
         )}
 
-        {!loadingProducts && !error && pageInfo.totalPages > 1 && (
+        {!isLoading  && !isError  && pageInfo.totalPages > 1 && (
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => setPage((old) => Math.max(old - 1, 1))}
@@ -451,7 +403,7 @@ export default function StoreProductsPage() {
             </button>
 
             <span className="rounded-2xl bg-white px-5 py-3 font-black text-slate-800 shadow-sm ring-1 ring-slate-200">
-              Page {pageInfo.page} of {pageInfo.totalPages} / Total {pageInfo.total}
+              Page {pageInfo.page} of {pageInfo.totalPages} 
             </span>
 
             <button
