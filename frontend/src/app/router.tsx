@@ -6,6 +6,7 @@ import CreateShopPage from "../pages/trader/CreateShopPage";
 import SelectShopPage from "../pages/trader/SelectShopPage";
 import { StoreProtectedRoute } from "./ProtectedRoutes/StoreProtectedRoute";
 import { ProtectedRoute } from "./ProtectedRoutes/ProtectedRoute";
+import ProductShowPage from "../pages/customer/ProductShowPage";
 
 
 
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/shop/:websiteId",
+    element: <ProductShowPage />,
   },
   {
     path: "*",

@@ -58,4 +58,8 @@ export class ShopRepository {
         const find = await shopModel.findById(id);
         return find;
     }
+
+     async findShopIdByWebsiteId(websiteId: string) {
+    return await shopModel.findOne({ websiteId }, { _id: 1 });
+  }
 }
