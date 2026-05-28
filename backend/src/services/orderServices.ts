@@ -9,7 +9,7 @@ export class orderServices {
     async updateOrderStatus(
         orderId: string,
         newStatus: OrderStatus,
-        storeId:string
+        storeId: string
     ) {
         const order = await this.orderRepo.findById(orderId);
 
@@ -20,9 +20,9 @@ export class orderServices {
                 msg: "Order not found",
             };
         }
-         /// order id not blongs to shop ,, usually this is hacking ...
-        if(storeId!= order.storeId.toString()){
-             return {
+        /// order id not blongs to shop ,, usually this is hacking ...
+        if (storeId != order.storeId.toString()) {
+            return {
                 status: 404,
                 msg: "error",
             };
@@ -61,4 +61,11 @@ export class orderServices {
         };
     }
 
+    async getOrdersTrader(storeId: string, page: number) {
+
+        const findOrders = this.orderRepo.findPaidOrders(storeId,page)
+        return ({
+            status: 200, msg: findOrders
+        })
+    }
 }
