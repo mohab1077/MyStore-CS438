@@ -16,19 +16,20 @@ export class orderRepository {
     );
   }
   async findPaidOrders(storeId: string, page: number) {
-    const LIMIT = 25
+    const LIMIT = 10
     const skip = (page - 1) * LIMIT;
     const findOrders = await orderModel.find({ storeId, paymentStatus: 'paid' }).sort({ createdAt: -1 })
       .skip(skip)
       .limit(LIMIT);
+    if(!findOrders){
+      return false
+    }
     const total = await orderModel.countDocuments({ storeId, paymentStatus: 'paid' });
     return ({
-      status: 200, msg: {
         data: findOrders,
         page,
         totalPages: Math.ceil(total / LIMIT),
         total,
-      }
     })
   }
 }

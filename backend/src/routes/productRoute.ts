@@ -33,8 +33,6 @@ export class productRoute {
   }
 
   private routes() {
-
-    
     // create product
     this.router.post(
       "/create",

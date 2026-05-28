@@ -3,12 +3,13 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 interface IOrderItem {
   ProductName: string;
   quantity: number;
-  
+
+
 }
 export interface IOrder extends Document {
   orderNumber: number; // auto inc
   storeId: Types.ObjectId;
-  customerId: Types.ObjectId;
+  customerEmail:string;
   products: IOrderItem[];
   totalAmount: number;
   paymentStatus: "pending" | "paid";
@@ -39,11 +40,9 @@ const orderSchema = new Schema<IOrder>(
       index: true,
     },
 
-    customerId: {
-      type: Schema.Types.ObjectId,
-      ref: "users",
+    customerEmail: {
+      type: String,
       required: true,
-      index: true,
     },
 
     products: { type: [orderItemSchema], required: true, default: [] },

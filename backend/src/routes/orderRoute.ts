@@ -32,11 +32,21 @@ class orderRoutes {
 
 
     this.router.get(
+  "/test",
+  (req: Request, res: Response) => {
+    console.log("TEST ROUTE WORKS");
+
+    return res.json({
+      message: "order route works",
+    });
+  }
+);
+    this.router.get(
       "/orders",
       this.traderMiddleware.handle,
       this.shopOwnerMiddleware.handle,
-
       asyncHandler(async (req: any, res: Response) => {
+        
         const page = Number(req.query.page) || 1;
         const { status, msg } = await this.Services.getOrdersTrader(
         req.query.id,
@@ -69,10 +79,10 @@ class orderRoutes {
   }
 }
 
-const shopRoute = new orderRoutes(
+const orderRoute = new orderRoutes(
   new TraderMiddleware(),
   new ShopOwnerMiddleware(),
   new orderRepository()
 ).router;
 
-export default shopRoute;
+export default orderRoute;

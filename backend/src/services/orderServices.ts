@@ -63,7 +63,7 @@ export class orderServices {
 
     async getOrdersTrader(storeId: string, page: number) {
 
-        const findOrders = this.orderRepo.findPaidOrders(storeId,page)
+        const findOrders = await this.orderRepo.findPaidOrders(storeId, page)
         return ({
             status: 200, msg: findOrders
         })

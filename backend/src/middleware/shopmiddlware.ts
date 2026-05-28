@@ -11,9 +11,7 @@ export class ShopOwnerMiddleware {
   handle = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const rawId = req.body?.id ?? req.query?.id;
-
       const shopId = String(rawId);
-     
 
       if (!shopId) {
         return res.status(400).json({

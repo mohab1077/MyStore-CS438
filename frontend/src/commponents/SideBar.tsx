@@ -111,7 +111,7 @@ export default function Sidebar({
     selectedItem: string;
     onSelectItem: (item: string) => void;
 }) {
-    const mainItems = [ "Products" ];
+    const mainItems = [ "Products" , "Order Management" ];
 
     
 
