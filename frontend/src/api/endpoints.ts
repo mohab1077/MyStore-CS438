@@ -18,6 +18,10 @@ export const ENDPOINTS = {
     DELETE: "/product/prod",
     TRADER_PROD: "/product/prod",
      GET_PROD: "/product/csm/prod"
-  }
+  },
 
+  order: {
+   GET_ORDERS: "/order/orders",
+    EDIT_ORDER: "/order/orders",
+  }
 };
