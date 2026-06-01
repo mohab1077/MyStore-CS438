@@ -8,6 +8,7 @@ import { StoreProtectedRoute } from "./ProtectedRoutes/StoreProtectedRoute";
 import { ProtectedRoute } from "./ProtectedRoutes/ProtectedRoute";
 import ProductShowPage from "../pages/customer/ProductShowPage";
 import OrdersPage from "../pages/trader/OrdersPage";
+import ShopInfoPage from "../pages/trader/ShopInfoPage";
 
 
 
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
         element: <TraderLayout />,
         children: [
           { path: "products", element: <ProductPage /> }, {path: "order", element: <OrdersPage />},
+          { path: "info", element: <ShopInfoPage /> }
         ],
       },
     ],

@@ -72,5 +72,21 @@ async getMyShops(traderId: string) {
   };
 }
 
+ async editShop(ShopName:string , logo:string , description:string,shopNumber:string,id:string) {
+    const find = await this.ShopRepo.editShop(ShopName,logo,description,shopNumber,id);
+
+    if (!find) {
+      return {
+        status: 400,
+        msg: "shop not found.",
+      };
+    }
+
+    return {
+      status: 200,
+      msg: "shop Information updated successfully.",
+    };
+  }
+
   
 }

@@ -10,7 +10,9 @@ export const ENDPOINTS = {
     GET_MY_SHOPS: "/shop/myshops",
 
     GET_CATEGORY: "/shop/category",
-    EDIT_CATEGORY: "/shop/category"
+    EDIT_CATEGORY: "/shop/category",
+    EDIT: "/shop/edit",
+    GET_ONE: "/shop/"
   },
   product: {
     CREATE: "/product/create",
