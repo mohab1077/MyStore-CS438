@@ -73,7 +73,7 @@ async getMyShops(traderId: string) {
 }
 
  async editShop(ShopName:string , logo:string , description:string,shopNumber:string,id:string) {
-    const find = await this.ShopRepo.editShop(ShopName,string,description,shopNumber,id);
+    const find = await this.ShopRepo.editShop(ShopName,logo,description,shopNumber,id);
 
     if (!find) {
       return {
