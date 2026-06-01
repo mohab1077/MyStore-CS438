@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { OrderStatus } from "../classes/orderState";
 import { IOrder, orderModel } from "../modules/order";
 
