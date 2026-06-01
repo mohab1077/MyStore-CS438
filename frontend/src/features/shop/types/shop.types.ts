@@ -16,10 +16,8 @@ export type EditShopInput = {
   logo?: string;
   description?: string;
   shopNumber?: string;
-  defaultCurrency?: string;
-  LyPayInfo?: any;
+  
 };
-
 export type GetShopInput = {
   id: string;
 };

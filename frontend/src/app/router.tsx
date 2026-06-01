@@ -39,6 +39,7 @@ export const router = createBrowserRouter([
         element: <TraderLayout />,
         children: [
           { path: "products", element: <ProductPage /> }, {path: "order", element: <OrdersPage />},
+          { path: "info", element: <ShopInfoPage /> }
         ],
       },
     ],
