@@ -192,7 +192,9 @@ const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 export default function StoreSettingsPage() {
   const { storeID } = useAuth();
 
- 
+ if(!storeID){
+  return
+ }
  const [logoFile, setLogoFile] = useState<File | null>(null);
   const { data, isLoading, isError } = useGetShop(storeID);
   const { mutate, isPending } = useEditShop();

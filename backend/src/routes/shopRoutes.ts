@@ -143,7 +143,7 @@ class shopRoutes {
             return res.status(400).json(check.error.issues[0].message);
           }
         }
-        const { status, msg } = await this.Services.editShop({ShopName , logo , description,shopNumber,id})
+        const { status, msg } = await this.Services.editShop(ShopName , logo , description,shopNumber,id)
 
         return res.status(status).json(msg);
       })
