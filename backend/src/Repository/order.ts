@@ -32,4 +32,25 @@ export class orderRepository {
         total,
     })
   }
+
+   async getTodaySales(storeId: string, start: Date, end: Date) {
+    const salesToday = await orderModel.aggregate([
+      {
+        $match: {
+          storeId: new Types.ObjectId(storeId),
+          paymentStatus: "paid",
+          orderDate: { $gte: start, $lte: end },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: "$totalAmount" },
+          ordersCount: { $sum: 1 },
+        },
+      },
+    ]);
+
+    return salesToday[0] || { totalSales: 0, ordersCount: 0 };
+  }
 }

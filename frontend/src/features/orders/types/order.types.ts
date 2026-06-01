@@ -19,7 +19,7 @@ export type EditTraderOrderInput = {
 };
 
 export type TraderSellsInput = {
-  storeId: string;
+  id: string;
 };
 
 export type TraderHistorySellsInput = {
