@@ -76,7 +76,7 @@ export class orderServices {
     const end = new Date();
     end.setHours(23, 59, 59, 999);
 
-    const sales = await this.salesRepo.getTodaySales(storeId, start, end);
+    const sales = await this.orderRepo.getTodaySales(storeId, start, end);
 
     return {
       status: 200,
