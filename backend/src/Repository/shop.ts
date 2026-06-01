@@ -62,4 +62,22 @@ export class ShopRepository {
      async findShopIdByWebsiteId(websiteId: string) {
     return await shopModel.findOne({ websiteId }, { _id: 1 });
   }
+
+    async editShop(ShopName:string , logo:string , description:string,shopNumber:string,id:string) {
+        const find = await shopModel.findById(id);
+
+        if (!find) {
+            return null;
+        }
+
+        find.ShopName = ShopName;
+        find.logo = logo;
+        find.description = description
+        find.shopNumber = shopNumber
+
+
+        await find.save();
+
+        return find;
+    }
 }

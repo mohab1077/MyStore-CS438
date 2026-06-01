@@ -56,12 +56,14 @@ class shopRoutes {
         }
 
         const newShop = new Shop(
+          "",
+          "",
           websiteId,
           traderId,
           ShopName,
           shopNumber,
           []
-        );
+);
 
         const { status, msg } = await this.Services.createShop(newShop);
 
@@ -106,6 +108,42 @@ class shopRoutes {
         const { id, categorys } = req.body;
         shop.category = categorys;
         const { status, msg } = await this.Services.editCategory(shop)
+
+        return res.status(status).json(msg);
+      })
+    );
+
+     this.router.get(
+      "/",
+      this.traderMiddleware.handle,
+      this.shopOwnerMiddleware.handle,
+
+      asyncHandler(async (req: any, res: Response) => {
+        const shop = req?.shop
+
+        return res.status(200).json(shop);
+      })
+    );
+
+      this.router.put(
+      "/edit",
+      this.traderMiddleware.handle,
+      this.shopOwnerMiddleware.handle,
+
+      asyncHandler(async (req: any, res: Response) => {
+
+        const {ShopName , logo , description,shopNumber,id} = req.body
+          const validators = [
+          ShopNameValidator.safeParse(ShopName),
+          PhoneValidator.safeParse(shopNumber),
+        ];
+
+        for (const check of validators) {
+          if (!check.success) {
+            return res.status(400).json(check.error.issues[0].message);
+          }
+        }
+        const { status, msg } = await this.Services.editShop({ShopName , logo , description,shopNumber,id})
 
         return res.status(status).json(msg);
       })

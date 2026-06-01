@@ -1,5 +1,7 @@
  export class Shop {
-    constructor(
+     constructor(
+        public description: string,
+        public logo: string,
         private websiteId: string,
         private userId: string,
         public  ShopName: string,

@@ -36,7 +36,9 @@ export class ShopOwnerMiddleware {
         });
       }
 
-      req.shop = new Shop(
+     req.shop = new Shop(
+        shop.description,
+        shop.logo,
         shop.websiteId,
         shop.userId.toString(),
         shop.ShopName,
