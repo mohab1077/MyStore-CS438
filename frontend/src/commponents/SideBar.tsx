@@ -4,15 +4,20 @@ import { capitalizeFirst } from "../utils/capitalizeFirst";
 
 
 function Avatar() {
+    const { logo } = useAuth()
     return (
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black font-bold text-white">
-            S
+            <img
+                src={logo ? logo : ""}
+                alt="logo"
+                className="h-full w-full object-cover"
+            />
         </div>
     );
 }
 
 function SidebarHeader({ onToggle }: { onToggle: () => void }) {
-     const { storeName  } = useAuth()
+    const { storeName } = useAuth()
     return (
         <div className="flex items-center justify-between px-2 py-3">
             <button
@@ -36,10 +41,11 @@ export function DropdownMenu({
 }) {
     const items = [
         "Switch Shop",
-        "Log out",
-        "Create New Shop"
+        "Create New Shop",
+        "Shop Information",
+        "Log out"
     ];
-     const { storeName ,websiteId } = useAuth()
+    const { storeName, websiteId } = useAuth()
 
     return (
         <div className="absolute left-4 top-14 z-50 w-[280px] rounded-2xl border bg-white shadow-xl">
@@ -48,7 +54,14 @@ export function DropdownMenu({
                     <Avatar />
                     <div>
                         <div className="font-semibold">{storeName}</div>
-                        <div className="text-sm text-gray-500">{websiteId}</div>
+                        <a
+                            href={`/shop/${websiteId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                        >
+                            /shop/{websiteId}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -93,8 +106,8 @@ function SidebarButton({
                 navigate(`/user/${firstWord}`);
             }}
             className={`w-full rounded-lg px-3 py-2 text-left transition cursor-pointer ${isSelected
-                    ? "bg-purple-100 font-medium text-purple-600"
-                    : "text-zinc-700 hover:bg-gray-200"
+                ? "bg-purple-100 font-medium text-purple-600"
+                : "text-zinc-700 hover:bg-gray-200"
                 }`}
         >
             {item}
@@ -111,9 +124,9 @@ export default function Sidebar({
     selectedItem: string;
     onSelectItem: (item: string) => void;
 }) {
-    const mainItems = [ "Products" , "Order Management" ];
+    const mainItems = ["Products", "Order Management"];
 
-    
+
 
     return (
         <div className="relative min-h-screen w-[260px] space-y-4 bg-[#f5f5f3] p-4 border-r border-zinc-200 ">

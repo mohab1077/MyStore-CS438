@@ -18,6 +18,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return localStorage.getItem("websiteId");
   })
 
+  const [logo , setlogo] = useState<string | null>(() => {
+    return localStorage.getItem("logo");
+  })
+
   const isAuthenticated = Boolean(token);
   const isAuthenticatedStroe = Boolean(storeID);
 
@@ -37,11 +41,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("storeID", id);
     setStoreIDState(id);
   };
-  const setShopInfo =(name:string , id:string)=>{
+  const setShopInfo =(name:string , id:string , logo:string)=>{
     localStorage.setItem("storeName", name);
     setstoreName(name);
     localStorage.setItem("websiteId", id);
     setwebsiteId(id);
+    localStorage.setItem("logo", logo);
+    setlogo(logo)
 
   }
 
@@ -52,6 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         storeName,
         websiteId,
         storeID,
+        logo,
         isAuthenticated,
         isAuthenticatedStroe,
         login,

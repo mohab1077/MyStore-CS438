@@ -31,7 +31,7 @@ function ShopCard({
         }`}
     >
       <img
-        src={""}
+        src={shop.logo}
         alt={shop.ShopName}
         className="h-12 w-12 rounded-xl object-cover"
       />
@@ -81,7 +81,7 @@ export default function SelectShop() {
     setStoreID(selected)
 
     setShopInfo(selectshop?.ShopName || "",
-      selectshop?.websiteId || "")
+      selectshop?.websiteId || "" ,selectshop?.logo || "")
     navigate("/user/products")
     setTargetRoute(`/store/${selected}`);
 
