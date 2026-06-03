@@ -3,6 +3,7 @@ import { useGetTraderOrders } from "../hooks/useGetTraderOrders";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { useEditTraderOrder } from "../hooks/useEditTraderOrder";
 import toast from "react-hot-toast";
+import { useGetTraderDaySells } from "../hooks/useGetTraderDaySells";
 
 
 type OrderItem = {
@@ -235,7 +236,7 @@ function OrdersTable({ rows, setRows }: OrdersTableProps) {
     return
   }
 
-   const { mutate } = useEditTraderOrder();
+  const { mutate } = useEditTraderOrder();
 
 
   const filteredRows = useMemo(() => {
@@ -454,37 +455,52 @@ function TopTabs() {
   );
 }
 
+
+
 function StatPill() {
+  const { mutate, isPending, data, error } = useGetTraderDaySells();
+  const { storeID } = useAuth();
+  useEffect(() => {
+    if (!storeID) return;
+
+    mutate({
+      id: storeID,
+    });
+  }, [storeID, mutate]);
+
+  if (isPending) {
+    return <div className="p-4">Loading DaySells...</div>;
+  }
+
+  if (error) {
+    return <div className="p-4">Something went wrong</div>;
+  }
   return (
     <div className="rounded-lg border border-zinc-200 bg-white px-4 py-3">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-600">
           <div className="flex items-center gap-2">
-            <span className="text-lg font-semibold text-zinc-900">24</span>
-            <span>Total orders</span>
+            <span className="text-lg font-semibold text-zinc-900">
+              {data?.totalSales ?? 0}
+            </span>
+            <span>Total sales today</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-lg font-semibold text-zinc-900">8</span>
-            <span className="text-emerald-600 text-xs font-medium">+33%</span>
-            <span>Delivered</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-semibold text-zinc-900">5</span>
-            <span className="text-amber-600 text-xs font-medium">Pending</span>
-            <span>Need action</span>
+            <span className="text-lg font-semibold text-zinc-900">
+              {data?.ordersCount ?? 0}
+            </span>
+            <span>Paid orders today</span>
           </div>
         </div>
 
         <div className="text-sm text-zinc-600">
-          📦 Track and manage your recent orders
+          💰 Today&apos;s paid sales summary
         </div>
       </div>
     </div>
   );
 }
-
 export default function TraderHome() {
   const { storeID } = useAuth();
 
@@ -519,7 +535,6 @@ export default function TraderHome() {
   return (
     <div className="min-h-screen bg-[#f7f5f2]">
       <TopTabs />
-
       <div className="space-y-4 p-4">
         <StatPill />
 

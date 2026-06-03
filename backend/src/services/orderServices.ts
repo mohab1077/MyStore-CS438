@@ -68,4 +68,19 @@ export class orderServices {
             status: 200, msg: findOrders
         })
     }
+
+     async getTodaySells( storeId:string ) {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+
+    const sales = await this.orderRepo.getTodaySales(storeId, start, end);
+
+    return {
+      status: 200,
+      msg: sales,
+    };
+  }
 }

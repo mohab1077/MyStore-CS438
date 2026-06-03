@@ -25,5 +25,6 @@ export const ENDPOINTS = {
   order: {
    GET_ORDERS: "/order/orders",
     EDIT_ORDER: "/order/orders",
+    TRADER_DAY_SELLS : "/order/sells"
   }
 };

@@ -48,6 +48,9 @@ export default function TraderLayout() {
     if(item == "Create New Shop"){
        navigate("../create");
     }
+    if(item == "Shop Information"){
+       navigate("/user/info");
+    }
    }
 
   return (

@@ -74,6 +74,20 @@ class orderRoutes {
       })
     );
 
+       this.router.post(
+      "/sells",
+      this.traderMiddleware.handle,
+      this.shopOwnerMiddleware.handle,
+
+      asyncHandler(async (req: any, res: Response) => {
+         const {id} = req.body
+        const { status, msg } = await this.Services.getTodaySells(
+        id
+      );
+        return res.status(status).json(msg);
+      })
+    );
+
 
 
   }
