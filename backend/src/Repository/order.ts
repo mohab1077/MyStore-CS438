@@ -22,19 +22,19 @@ export class orderRepository {
     const findOrders = await orderModel.find({ storeId, paymentStatus: 'paid' }).sort({ createdAt: -1 })
       .skip(skip)
       .limit(LIMIT);
-    if(!findOrders){
+    if (!findOrders) {
       return false
     }
     const total = await orderModel.countDocuments({ storeId, paymentStatus: 'paid' });
     return ({
-        data: findOrders,
-        page,
-        totalPages: Math.ceil(total / LIMIT),
-        total,
+      data: findOrders,
+      page,
+      totalPages: Math.ceil(total / LIMIT),
+      total,
     })
   }
 
-   async getTodaySales(storeId: string, start: Date, end: Date) {
+  async getTodaySales(storeId: string, start: Date, end: Date) {
     const salesToday = await orderModel.aggregate([
       {
         $match: {

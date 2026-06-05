@@ -41,6 +41,8 @@ class orderRoutes {
     });
   }
 );
+
+// get paid shop order
     this.router.get(
       "/orders",
       this.traderMiddleware.handle,
@@ -57,7 +59,7 @@ class orderRoutes {
       })
     );
 
-
+    //edit status trader order
      this.router.post(
       "/orders",
       this.traderMiddleware.handle,
@@ -73,7 +75,8 @@ class orderRoutes {
         return res.status(status).json(msg);
       })
     );
-
+ 
+     //get total sells of today 
        this.router.post(
       "/sells",
       this.traderMiddleware.handle,

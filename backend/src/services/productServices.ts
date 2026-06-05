@@ -10,14 +10,8 @@ export class ProductServices {
     category: string[]
   ) {
     const find = await this.ProductRepo.CreateProd(prod, category);
-
-    if (find === null) {
-      return {
-        status: 400,
-        msg: "shop not found",
-      };
-    }
-
+  
+  // if category not in list return 400
     if (find === false) {
       return {
         status: 400,
@@ -36,13 +30,8 @@ export class ProductServices {
     category: string[]
   ) {
     const find = await this.ProductRepo.EditProd(prod, category);
+    
 
-    if (find === null) {
-      return {
-        status: 400,
-        msg: "shop not found",
-      };
-    }
 
     if (find === false) {
       return {
@@ -50,7 +39,7 @@ export class ProductServices {
         msg: "this category not found",
       };
     }
-
+   // if product not found or product owns to another trader 
     if (find === undefined) {
       return {
         status: 400,
@@ -70,13 +59,8 @@ export class ProductServices {
   ) {
     const find = await this.ProductRepo.DeleteProd(_id, id);
 
-    if (find === null) {
-      return {
-        status: 400,
-        msg: "shop not found",
-      };
-    }
-
+ 
+ // if product not found or product owns to another trader 
     if (find === false) {
       return {
         status: 400,
@@ -96,13 +80,6 @@ export class ProductServices {
   ) {
     const find = await this.ProductRepo.GetProd(id, page);
 
-    if (!find) {
-      return {
-        status: 400,
-        msg: "shop not found",
-      };
-    }
-
     return {
       status: 200,
       msg: find,
@@ -116,7 +93,7 @@ export class ProductServices {
 
   ) {
     const find = await this.ProductRepo.GetCustomerProd(websiteId, page,shopRepo);
-
+    // we search by wesbite id so if not found , so shop not found
     if (!find) {
       return {
         status: 400,

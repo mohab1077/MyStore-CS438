@@ -36,7 +36,7 @@ class shopRoutes {
 
   private routes() {
 
-
+    // create shop for trader must be 10
     this.router.post(
       "/CreateShop",
       this.traderMiddleware.handle,
@@ -63,14 +63,14 @@ class shopRoutes {
           ShopName,
           shopNumber,
           []
-);
+        );
 
         const { status, msg } = await this.Services.createShop(newShop);
 
         return res.status(status).json(msg);
       })
     );
-
+   // show trader shops this uses for select shop and then go manage it 
     this.router.get(
       "/myshops",
       this.traderMiddleware.handle,
@@ -112,8 +112,8 @@ class shopRoutes {
         return res.status(status).json(msg);
       })
     );
-
-     this.router.get(
+// get shop info for edit 
+    this.router.get(
       "/",
       this.traderMiddleware.handle,
       this.shopOwnerMiddleware.handle,
@@ -124,16 +124,16 @@ class shopRoutes {
         return res.status(200).json(shop);
       })
     );
-
-      this.router.put(
+ // edit shop info
+    this.router.put(
       "/edit",
       this.traderMiddleware.handle,
       this.shopOwnerMiddleware.handle,
 
       asyncHandler(async (req: any, res: Response) => {
 
-        const {ShopName , logo , description,shopNumber,id} = req.body
-          const validators = [
+        const { ShopName, logo, description, shopNumber, id } = req.body
+        const validators = [
           ShopNameValidator.safeParse(ShopName),
           PhoneValidator.safeParse(shopNumber),
         ];
@@ -143,7 +143,7 @@ class shopRoutes {
             return res.status(400).json(check.error.issues[0].message);
           }
         }
-        const { status, msg } = await this.Services.editShop(ShopName , logo , description,shopNumber,id)
+        const { status, msg } = await this.Services.editShop(ShopName, logo, description, shopNumber, id)
 
         return res.status(status).json(msg);
       })

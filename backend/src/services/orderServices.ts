@@ -37,6 +37,8 @@ export class orderServices {
                 ? context.cancelOrder()
                 : context.proceedToNext();
 
+        // can not move the order to next or can not cancel the order
+
         if (!isChanged) {
             return {
                 status: 400,
@@ -45,7 +47,7 @@ export class orderServices {
         }
 
         const finalStatus = context.getStatus();
-
+        // if we can move the order but the new status its not the same of next status 
         if (finalStatus !== newStatus) {
             return {
                 status: 400,
@@ -69,18 +71,18 @@ export class orderServices {
         })
     }
 
-     async getTodaySells( storeId:string ) {
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
+    async getTodaySells(storeId: string) {
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
 
-    const end = new Date();
-    end.setHours(23, 59, 59, 999);
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
 
-    const sales = await this.orderRepo.getTodaySales(storeId, start, end);
+        const sales = await this.orderRepo.getTodaySales(storeId, start, end);
 
-    return {
-      status: 200,
-      msg: sales,
-    };
-  }
+        return {
+            status: 200,
+            msg: sales,
+        };
+    }
 }

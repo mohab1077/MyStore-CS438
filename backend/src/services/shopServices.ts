@@ -35,7 +35,7 @@ export class shopServices {
       msg: "this shop id already taken",
     };
   }
-
+   // when trader has more than 11 shops and trys to create the 12th one will say something wrong
   if (find === false) {
     return {
       status: 400,
@@ -52,13 +52,8 @@ export class shopServices {
 async getMyShops(traderId: string) {
   const find = await this.ShopRepo.GetMyShops(traderId);
 
-  if (!find) {
-    return {
-      status: 400,
-      msg: "No shops found.",
-    };
-  }
 
+ // if not shops return empty array frontend will hadele it when theres empty array it will navigate to create shop page
   if (find.length == 0) {
     return {
       status: 203,
@@ -74,8 +69,8 @@ async getMyShops(traderId: string) {
 
  async editShop(ShopName:string , logo:string , description:string,shopNumber:string,id:string) {
     const find = await this.ShopRepo.editShop(ShopName,logo,description,shopNumber,id);
-
-    if (!find) {
+  // no shop found 
+    if (find === null) {
       return {
         status: 400,
         msg: "shop not found.",

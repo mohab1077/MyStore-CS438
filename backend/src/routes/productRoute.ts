@@ -105,7 +105,7 @@ export class productRoute {
         return res.status(status).json(msg);
       })
     );
-
+   //get shop products
     this.router.get(
       "/prod",
       this.traderMiddleware.handle,
@@ -122,7 +122,7 @@ export class productRoute {
         return res.status(status).json(msg);
       })
     );
-
+   //get shop products for customer .. hidden will not show 
     this.router.get(
       "/csm/prod",
 
