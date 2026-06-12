@@ -9,6 +9,8 @@ import { ProtectedRoute } from "./ProtectedRoutes/ProtectedRoute";
 import ProductShowPage from "../pages/customer/ProductShowPage";
 import OrdersPage from "../pages/trader/OrdersPage";
 import ShopInfoPage from "../pages/trader/ShopInfoPage";
+import EditUserInfoPage from "../pages/trader/TraderInfoPage";
+import PasswordResetFlow from "../commponents/ForgetPass";
 
 
 
@@ -16,6 +18,10 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+    {
+    path: "/forget",
+    element: <PasswordResetFlow />
   },
 
   {
@@ -29,6 +35,10 @@ export const router = createBrowserRouter([
         path: "/create",
         element: <CreateShopPage />,
       },
+      {
+        path: "/account",
+        element: <EditUserInfoPage />,
+      },
     ],
   },
 
@@ -39,7 +49,7 @@ export const router = createBrowserRouter([
         path: "/user",
         element: <TraderLayout />,
         children: [
-          { path: "products", element: <ProductPage /> }, {path: "order", element: <OrdersPage />},
+          { path: "products", element: <ProductPage /> }, { path: "order", element: <OrdersPage /> },
           { path: "info", element: <ShopInfoPage /> }
         ],
       },

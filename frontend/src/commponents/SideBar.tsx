@@ -43,6 +43,7 @@ export function DropdownMenu({
         "Switch Shop",
         "Create New Shop",
         "Shop Information",
+        "Account",
         "Log out"
     ];
     const { storeName, websiteId } = useAuth()

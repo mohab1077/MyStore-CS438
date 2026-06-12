@@ -16,7 +16,7 @@ interface LoginResponse {
   status : number ;
 }
 
-class JwtService {
+export class JwtService {
   static sign(data: object): string {
     return jwt.sign(
       data,

@@ -4,16 +4,24 @@ import asyncHandler from "../Errors/asyncHandler";
 import { Authentication, TraderAndAdminLogin } from "../classes/Authentication";
 import { SignUpMangment, TraderSignup } from "../classes/SignUpMangment";
 import { EmailValidator, NameValidator, PhoneValidator } from "../Errors/validations";
+import { TraderMiddleware } from "../middleware/middleware";
+import { UserServices } from "../services/userServices";
+import { UserShopRepository } from "../Repository/user";
 
 
 
 
 export class AuthRoutes {
   public router: Router;
+  private Services: UserServices
 
-  constructor() {
+  constructor(
+    private traderMiddleware: TraderMiddleware,
+    private userRepo: UserShopRepository
+  ) {
 
     this.router = express.Router();
+    this.Services = new UserServices(this.userRepo);
     this.routes();
   }
 
@@ -86,7 +94,44 @@ export class AuthRoutes {
       })
     );
 
+    // get trader info
+    this.router.get("/info", this.traderMiddleware.handle, asyncHandler(async (req: any, res) => {
+      const myuser = req?.user?._id
+      const { status, msg } = await this.Services.getinfo({ myuser })
+      return res.status(status).json(msg)
+    }))
+
+    // edit trader info
+    this.router.put("/info", this.traderMiddleware.handle, asyncHandler(async (req: any, res) => {
+      const myuser = req?.user?._id
+      const { email, phone } = req.body
+      const { status, msg } = await this.Services.putinfo({ email, phone, myuser })
+      return res.status(status).json(msg)
+    }))
+
+    this.router.post("/sendCode", asyncHandler(async (req, res) => {
+      const { email } = req.body
+      const { status, msg } = await this.Services.SendCode({ email })
+      return res.status(status).json(msg)
+    }))
+
+    this.router.post("/ConfirmCode", asyncHandler(async (req, res) => {
+      const { code, email } = req.body
+      const { status, msg, access } = await this.Services.ConfirmCode({ code, email })
+      return res.status(status).json({ msg, access })
+    }))
+
+
+    this.router.put("/pass", this.traderMiddleware.handle, asyncHandler(async (req: any, res) => {
+      const myuser = req?.user?._id
+      const { password } = req.body
+      const { status, msg } = await this.Services.changePass({ password, myuser })
+      return res.status(status).json(msg)
+    }))
+
   }
+
+
 }
 
-export default new AuthRoutes().router;
+export default new AuthRoutes(new TraderMiddleware(), new UserShopRepository()).router;
