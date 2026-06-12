@@ -2,8 +2,9 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useAuth } from "../../../contexts/AuthProvider";
 import { useLogin } from "../hooks/useLogin";
+import { useAuth } from "../../../contexts/AuthProvider";
+
 
 function LinktreeLogo() {
   return (
@@ -207,12 +208,13 @@ export function LoginComponent({
         password: password,
       },
       {
-        onSuccess: (data) => {
+        onSuccess: (data:any) => {
           login(data.msg)
           navigate("/user");
 
         },
         onError: (error: any) => {
+          console.log(error?.response?.data)
           toast.error(
             error?.response?.data.msg || "Something went wrong"
           );
@@ -256,6 +258,18 @@ export function LoginComponent({
           <p className="mt-10 text-center text-base leading-7 text-zinc-600">
             By clicking <span className="font-semibold text-zinc-700">Login</span>, you agree to the
             terms and privacy policy.
+          </p>
+
+           <p className="mt-10 text-center text-lg text-zinc-700">
+            
+
+            <button
+              type="button"
+              onClick={() => navigate("/forget") }
+              className="font-semibold text-indigo-600 cursor-pointer"
+            >
+              Forgot your Password?
+            </button>
           </p>
 
           <p className="mt-10 text-center text-lg text-zinc-700">

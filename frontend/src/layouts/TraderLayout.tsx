@@ -51,6 +51,9 @@ export default function TraderLayout() {
     if(item == "Shop Information"){
        navigate("/user/info");
     }
+     if(item == "Account"){
+       navigate("/account");
+    }
    }
 
   return (

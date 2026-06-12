@@ -33,5 +33,9 @@ export class UserShopRepository{
     });
   }
 
+  async findById(id: string) {
+  return await usermodel.findById(id);
+}
+
   
 }

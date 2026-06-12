@@ -3,6 +3,11 @@ export const ENDPOINTS = {
   user: {
     LOGIN: "/user/login",
     REGISTER: "/user/signup",
+     SEND_CODE: "/user/sendCode",
+    CONFIRM_CODE: "/user/ConfirmCode",
+    CHANGE_PASSWORD: "/user/pass",
+    GET_INFO: "/user/info",
+    EDIT_INFO: "/user/info",
 
   },
    shop: {

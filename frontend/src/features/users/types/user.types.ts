@@ -11,3 +11,29 @@ export type RegisterInput = {
   phone: string;
   name: string;
 };
+
+
+
+export type SendCodeInput = {
+  email: string;
+};
+
+export type ConfirmCodeInput = {
+  email: string;
+  code: string;
+};
+
+export type ChangePasswordInput = {
+  password: string;
+};
+
+export type EditInfoInput = {
+  email: string;
+  phone: string;
+};
+
+export type UserInfo = {
+  
+  email: string;
+  phone: string;
+};
