@@ -31,7 +31,7 @@ export class ShopRepository {
             userId: shop.getuserid(),
         });
 
-        if (count > 10) {
+        if (count >= 10) {
             return false;
         }
 

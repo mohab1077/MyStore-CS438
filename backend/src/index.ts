@@ -41,7 +41,7 @@ app.use((err: any, req: any, res: any, next: any) => {
 
 
 mongoose
-  .connect(process.env.DATABASE_URL || "")
+  .connect("mongodb://localhost:27017/test")
   .then(() => console.log("Mongo connected!"))
   .catch((err) => console.log("Failed to connect!", err));
 
