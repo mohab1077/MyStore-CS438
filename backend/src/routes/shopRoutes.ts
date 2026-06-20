@@ -7,7 +7,7 @@ import { ShopOwnerMiddleware } from "../middleware/shopmiddlware";
 import { ShopRepository } from "../Repository/shop";
 import { shopServices } from "../services/shopServices";
 import { Shop } from "../classes/shop";
-import { PhoneValidator, ShopNameValidator } from "../Errors/validations";
+import { CategoryValidator, DescriptionValidator, LogoValidator, PhoneValidator, ShopNameValidator } from "../Errors/validations";
 
 console.log("SHOP ROUTE FILE LOADED");
 
@@ -70,7 +70,7 @@ class shopRoutes {
         return res.status(status).json(msg);
       })
     );
-   // show trader shops this uses for select shop and then go manage it 
+    // show trader shops this uses for select shop and then go manage it 
     this.router.get(
       "/myshops",
       this.traderMiddleware.handle,
@@ -106,13 +106,19 @@ class shopRoutes {
       asyncHandler(async (req: any, res: Response) => {
         const shop = req?.shop
         const { id, categorys } = req.body;
+
+        const check = CategoryValidator.safeParse(categorys);
+
+        if (!check.success) {
+          return res.status(400).json(check.error.issues[0].message);
+        }
         shop.category = categorys;
         const { status, msg } = await this.Services.editCategory(shop)
 
         return res.status(status).json(msg);
       })
     );
-// get shop info for edit 
+    // get shop info for edit 
     this.router.get(
       "/",
       this.traderMiddleware.handle,
@@ -124,7 +130,7 @@ class shopRoutes {
         return res.status(200).json(shop);
       })
     );
- // edit shop info
+    // edit shop info
     this.router.put(
       "/edit",
       this.traderMiddleware.handle,
@@ -136,6 +142,8 @@ class shopRoutes {
         const validators = [
           ShopNameValidator.safeParse(ShopName),
           PhoneValidator.safeParse(shopNumber),
+          LogoValidator.safeParse(logo),
+          DescriptionValidator.safeParse(description)
         ];
 
         for (const check of validators) {

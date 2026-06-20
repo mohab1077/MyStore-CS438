@@ -16,7 +16,36 @@ export const NameValidator = z
 
 export const ShopNameValidator = z
   .string()
+  .trim()
   .min(2, "Shop name too short")
   .max(80, "Shop name too long");
 
+  export const LogoValidator = z
+  .string()
+  .refine(
+    (v) =>
+      v === "" ||
+      /\/uploads\/.+\.(jpg|jpeg|png|webp)$/i.test(v),
+    {
+      message: "Invalid logo path",
+    }
+  );
+
+
+export const DescriptionValidator = z
+  .string()
+  .trim()
+  .max(500, "Description must not exceed 500 characters");
+
+
+export const PageValidator = z.coerce
+  .number()
+  .int()
+  .min(1, "Page must be greater than or equal to 1");
+
+export const CategoryValidator = z
+  .array(
+    z.string().trim().min(3).max(30)
+  )
+  .max(50, "Maximum 50 categories allowed");
 
